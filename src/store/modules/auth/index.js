@@ -8,6 +8,7 @@ export default {
       coachId : null,
       token : null,
       tokenExpiration : null,
+      forceLogout : false,
     }
   },
   getters,

@@ -10,7 +10,6 @@ export default {
   },
   shouldUpdate(state) {
     const {lastFetch} = state;
-    console.log(lastFetch);
     if (!lastFetch)
       return true;
     return (Date.now() - lastFetch) / 1000 > 60;  

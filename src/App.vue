@@ -1,31 +1,42 @@
 <template>
   <the-header />
+  <base-dialog :show="isForceLogout" fixed title="Token expired">
+    <p>You should <router-link to="/auth">re-login</router-link> to continue!</p>
+  </base-dialog>
   <router-view v-slot="slotProps">
     <transition name="route" mode="out-in">
-      <component :is="slotProps.Component"/>
+      <component :is="slotProps.Component" />
     </transition>
   </router-view>
 </template>
 
 <script>
-import TheHeader from "./layout/TheHeader.vue"
+import TheHeader from './layout/TheHeader.vue';
 
 export default {
-  components : {
+  components: {
     TheHeader,
-  }
-}
+  },
+  computed : {
+    isForceLogout() {
+      return this.$store.getters.isForceLogout;
+    }
+  },
+  created() {
+    this.$store.dispatch('tryLogin');
+  },
+};
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 * {
   box-sizing: border-box;
 }
 
 html {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 body {
@@ -54,6 +65,4 @@ body {
 .route-leave-active {
   transition: all 300ms ease-in;
 }
-
-
 </style>

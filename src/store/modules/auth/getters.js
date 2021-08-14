@@ -6,7 +6,9 @@ export default {
     return state.token;
   },
   isAuthenticated(state) {
-    console.log(state.token);
     return Boolean(state.token);
-  }
+  },
+  isForceLogout(state) {
+    return state.isForceLogout;
+  } 
 }
