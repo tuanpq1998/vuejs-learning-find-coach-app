@@ -34,6 +34,9 @@ export default {
     context.dispatch("logout");
     context.commit("setForceLogout", {isForceLogout : true});
   },
+  cancelForceLogout(context) {
+    context.commit("setForceLogout", {isForceLogout : false});
+  },
   async login(context, payload) {
     return context.dispatch('auth', {
       ...payload,
@@ -66,14 +69,14 @@ export default {
 
     if (!response.ok) throw new Error('Failed to fetch!');
 
-    const tokenExpiration = Date.now() + 5000;
+    const tokenExpiration = Date.now() + Number(json.expiresIn)*1000;
     localStorage.setItem("token", json.idToken);
     localStorage.setItem("userId", json.localId);
     localStorage.setItem("tokenExpiration", tokenExpiration);
     
     timer = setTimeout(() => {
       context.dispatch("forceLogout");
-    }, 5000);
+    }, Number(json.expiresIn)*1000);
 
     context.commit('setUser', {
       token: json.idToken,

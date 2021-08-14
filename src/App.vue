@@ -1,7 +1,7 @@
 <template>
   <the-header />
-  <base-dialog :show="isForceLogout" fixed title="Token expired">
-    <p>You should <router-link to="/auth">re-login</router-link> to continue!</p>
+  <base-dialog :show="isForceLogout" title="Token expired" @close="handleClose">
+    <p>You should re-login to continue!</p>
   </base-dialog>
   <router-view v-slot="slotProps">
     <transition name="route" mode="out-in">
@@ -25,6 +25,12 @@ export default {
   created() {
     this.$store.dispatch('tryLogin');
   },
+  methods : {
+    handleClose() {
+      this.$store.dispatch('cancelForceLogout');
+      this.$router.replace("/auth");
+    }
+  }
 };
 </script>
 
