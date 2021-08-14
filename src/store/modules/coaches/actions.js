@@ -1,9 +1,10 @@
 export default {
   addCoach(context, payload) {
     const id = context.rootGetters['coachId'];
+    const token = context.rootGetters.token;
 
     fetch(
-      `https://coach-vuejs-learning-default-rtdb.asia-southeast1.firebasedatabase.app/coaches/${id}.json`,
+      `https://coach-vuejs-learning-default-rtdb.asia-southeast1.firebasedatabase.app/coaches/${id}.json?auth=${token}`,
       {
         method: 'PUT',
         body: JSON.stringify(payload.coach)
@@ -14,7 +15,7 @@ export default {
     context.commit('addCoach', payload);
   },
   async loadCoaches(context, payload) {
-    if (!payload.isForce && !context.rootGetters.shouldUpdate)
+    if (!payload.isForce && !context.getters.shouldUpdate)
       return;
     
     const response = await fetch(

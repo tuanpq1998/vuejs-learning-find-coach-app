@@ -7,7 +7,8 @@
   <base-card>
     <div class="control">
       <base-button mode="outline" @click="loadCoaches(true)">Refresh</base-button>
-      <base-button v-if="!isCoach" link to="/register">Register as Coach</base-button>
+      <base-button v-if="!isCoach && isLoggedIn" link to="/register">Register as Coach</base-button>
+      <base-button v-if="!isLoggedIn" link to="/auth?redirect=register">Login and Register as Coach</base-button>
     </div>
     <div v-if="isLoading"><base-spinner/></div>
     <ul v-if="hasCoaches">
@@ -47,7 +48,10 @@ export default {
     isCoach() {
       const coachId = this.$store.getters["coachId"];
       return this.$store.getters["coaches/coachById"](coachId)!=null;
-    }
+    },
+    isLoggedIn() {
+      return this.$store.getters["isAuthenticated"];
+    },
   },
   methods : {
     setFilter(newFilter) {
@@ -57,7 +61,7 @@ export default {
       this.error = null;
       this.loadCoaches(true);
     },
-    async loadCoaches(isForce) {
+    async loadCoaches(isForce = false) {
       this.isLoading = true;
       try {
         await this.$store.dispatch("coaches/loadCoaches", {
@@ -70,7 +74,7 @@ export default {
     }
   },
   created() {
-    this.loadCoaches(true);
+    this.loadCoaches();
   }
 }
 </script>

@@ -1,7 +1,5 @@
 export default {
   contactCoach(context, payload) {
-    console.log(payload);
-    // const 
     payload.request.id = Date.now();
     
     fetch(`https://coach-vuejs-learning-default-rtdb.asia-southeast1.firebasedatabase.app/requests/${payload.request.coachId}/${payload.request.id}.json`, {
@@ -16,8 +14,8 @@ export default {
   },
   async loadRequests(context) {
     const coachId = context.rootGetters.coachId;
-
-    const response = await fetch(`https://coach-vuejs-learning-default-rtdb.asia-southeast1.firebasedatabase.app/requests/${coachId}.json`)
+    const token = context.rootGetters.token;
+    const response = await fetch(`https://coach-vuejs-learning-default-rtdb.asia-southeast1.firebasedatabase.app/requests/${coachId}.json?auth=${token}`)
     const json = await response.json();
     
     if (json == null) return;
